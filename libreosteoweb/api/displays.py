@@ -16,36 +16,42 @@ def filter_fields(f):
 class PatientDisplay(ModelForm):
     class Meta:
         model = models.Patient
+        fields = [ f.name for f in model._meta.fields if f.editable ]
 
     display_fields = dict([ (f.name, f.formfield().label) for f in filter( filter_fields, models.Patient._meta.fields)])
 
 class RegularDoctorDisplay(ModelForm):
     class Meta:
         model = models.RegularDoctor
+        fields = [ f.name for f in model._meta.fields if f.editable ]
 
     display_fields = dict([ (f.name, f.formfield().label) for f in filter( filter_fields, models.RegularDoctor._meta.fields)])
 
 class ExaminationDisplay(ModelForm):
     class Meta:
         model = models.Examination
+        fields = [ f.name for f in model._meta.fields if f.editable ]
 
     display_fields = dict([ (f.name, f.formfield().label) for f in filter( filter_fields, models.Examination._meta.fields)])
 
 class UserDisplay(ModelForm):
     class Meta:
         model = User
+        fields = [ f.name for f in model._meta.fields if f.editable ]
 
     display_fields = dict([ (f.name, f.formfield().label) for f in filter( filter_fields, User._meta.fields)])
 
 class TherapeutSettingsDisplay(ModelForm):
     class Meta:
         model = models.TherapeutSettings
+        fields = [ f.name for f in model._meta.fields if f.editable ]
 
     display_fields = dict([ (f.name, f.formfield().label) for f in filter( filter_fields, models.TherapeutSettings._meta.fields)])
 
 class OfficeSettingsDisplay(ModelForm):
     class Meta:
         model = models.OfficeSettings
+        fields = [ f.name for f in model._meta.fields if f.editable ]
 
     display_fields = dict([ (f.name, f.formfield().label) for f in filter( filter_fields, models.OfficeSettings._meta.fields)])
 
