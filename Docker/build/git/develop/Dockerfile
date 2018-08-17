@@ -2,8 +2,7 @@
 # Dockerfile to run libreosteo Containers
 ############################################################
 
-FROM littlejo/libreosteo-alpine-python3-common
-
+FROM python:3.6-alpine as base
 LABEL maintainer "Joseph Ligier"
 ENV version 0.6-dev
 ENV software Libreosteo
@@ -11,32 +10,75 @@ ENV REPO Libreosteo
 ENV USER libreosteo
 ENV BRANCH develop
 
+# Install dependancies
+RUN apk add --update \
+    tzdata \
+    gettext \
+    git \
+    python3-dev \
+    nodejs \
+    nodejs-npm \
+    gcc \
+    libc-dev
+
+RUN pip3 install wheel
+ADD https://api.github.com/repos/$USER/$REPO/git/refs/heads/$BRANCH version.json
+RUN git clone -b $BRANCH https://github.com/$USER/$REPO.git
+RUN mkdir /svc
+RUN cp Libreosteo/requirements/requirements.txt /svc
+
+WORKDIR /svc
+RUN pip3 wheel -r requirements.txt --wheel-dir=/svc/wheels
+
+FROM python:3.6-alpine
+ENV version 0.6-dev
+ENV software Libreosteo
+ENV REPO Libreosteo
+ENV USER libreosteo
+ENV BRANCH develop
+
+COPY --from=base /svc /svc
+
+WORKDIR /svc
+RUN pip install --no-index --find-links=wheels -r requirements.txt
+
+
+# Install dependancies
+RUN apk add ---update \
+    tzdata \
+    gettext \
+    git \
+    nodejs \
+    nodejs-npm
+
+RUN adduser -S -g '' libreosteo -u 1000
+RUN npm install -g bower
+
 RUN mkdir /$software && chown libreosteo: /$software
 
-USER libreosteo
-
-# Download libreosteo
+WORKDIR /
+USER $USER
+#
+## Download libreosteo
 ADD https://api.github.com/repos/$USER/$REPO/git/refs/heads/$BRANCH version.json
 RUN git clone -b $BRANCH https://github.com/$USER/$REPO.git
 
 # Install libreosteo
-WORKDIR /Libreosteo
-
-USER root
-RUN pip3 install -r requirements/requirements.txt
+WORKDIR /$software
 
 COPY launch-libreosteo.sh .
+USER root
 RUN chmod a+x launch-libreosteo.sh
+USER $USER
 
-USER libreosteo
 RUN bower install
 RUN python3 manage.py collectstatic --noinput
 COPY local.py.pg Libreosteo/settings/
 COPY local.py.sqlite Libreosteo/settings/
-USER libreosteo
 
 VOLUME ["/Libreosteo/media", "/Libreosteo/sql"]
 
 EXPOSE 8085
 
 ENTRYPOINT ["./launch-libreosteo.sh"]
+
