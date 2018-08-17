@@ -3,4 +3,4 @@ services:
   libreosteo:
     build:
       context: .
-    image: littlejo/libreosteo-alpine-common
+    image: littlejo/libreosteo-alpine-python3-common

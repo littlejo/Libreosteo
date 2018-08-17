@@ -19,5 +19,5 @@ else
     cat $tmp_constant_file ${local_file}.pg > $local_file
 fi
 
-python manage.py migrate
-python manage.py runserver 0.0.0.0:8085
+python3 manage.py migrate
+python3 manage.py runserver 0.0.0.0:8085

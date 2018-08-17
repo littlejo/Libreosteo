@@ -2,7 +2,7 @@
 # Dockerfile to run libreosteo Containers
 ############################################################
 
-FROM littlejo/libreosteo-alpine-common
+FROM littlejo/libreosteo-alpine-python3-common
 
 LABEL maintainer "Joseph Ligier"
 ENV version 0.6-dev
@@ -23,14 +23,14 @@ RUN git clone -b $BRANCH https://github.com/$USER/$REPO.git
 WORKDIR /Libreosteo
 
 USER root
-RUN pip install -r requirements/requ-py2.txt
+RUN pip3 install -r requirements/requirements.txt
 
 COPY launch-libreosteo.sh .
 RUN chmod a+x launch-libreosteo.sh
 
 USER libreosteo
 RUN bower install
-RUN python manage.py collectstatic --noinput
+RUN python3 manage.py collectstatic --noinput
 COPY local.py.pg Libreosteo/settings/
 COPY local.py.sqlite Libreosteo/settings/
 USER libreosteo

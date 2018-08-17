@@ -3,4 +3,4 @@ services:
   libreosteo:
     build:
       context: .
-    image: littlejo/libreosteo-git
+    image: littlejo/libreosteo-git-python3
