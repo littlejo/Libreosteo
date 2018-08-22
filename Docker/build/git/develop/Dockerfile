@@ -24,8 +24,8 @@ RUN git clone -b $BRANCH https://github.com/$USER/$REPO.git
 
 COPY launch-libreosteo.sh /$software
 RUN chmod a+x /$software/launch-libreosteo.sh
-COPY local.py.pg /$software/settings/
-COPY local.py.sqlite /$software/settings/
+COPY local.py.pg /$software/$software/settings/
+COPY local.py.sqlite /$software/$software/settings/
 
 RUN mkdir /svc
 RUN cp /Libreosteo/requirements/requirements.txt /svc
@@ -43,7 +43,6 @@ RUN bower install
 
 FROM python:3.6-alpine
 LABEL maintainer "Joseph Ligier"
-ENV software Libreosteo
 
 COPY --from=base /svc /svc
 COPY --from=base /Libreosteo /Libreosteo
@@ -59,12 +58,12 @@ RUN apk add --update \
     gettext \
     nodejs
 
-RUN chown -R libreosteo: /$software
+RUN chown libreosteo: /Libreosteo /Libreosteo/* /Libreosteo/Libreosteo/settings/
 
 RUN rm -rf /svc
 USER libreosteo
 
-WORKDIR /$software
+WORKDIR /Libreosteo
 RUN python manage.py collectstatic --noinput
 
 VOLUME ["/Libreosteo/media", "/Libreosteo/sql"]
