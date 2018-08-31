@@ -13,6 +13,7 @@ RUN apk add --update \
     python3-dev \
     nodejs \
     nodejs-npm \
+    linux-headers \
     gcc \
     libc-dev
 
