@@ -3,4 +3,6 @@ services:
   libreosteo:
     build:
       context: .
+      args:
+        python_version: 3.6
     image: littlejo/libreosteo-git-python3

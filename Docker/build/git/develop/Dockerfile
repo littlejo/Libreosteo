@@ -1,4 +1,5 @@
-FROM python:3.6-alpine as base
+ARG python_version=3.6
+FROM python:${python_version}-alpine as base
 ENV software Libreosteo
 ENV version 0.6-dev
 ENV REPO Libreosteo
@@ -43,7 +44,7 @@ WORKDIR /$software
 RUN bower install
 
 # Final Image
-FROM python:3.6-alpine
+FROM python:${python_version}-alpine
 LABEL maintainer "Joseph Ligier"
 ENV debug False
 ENV sql_host db
