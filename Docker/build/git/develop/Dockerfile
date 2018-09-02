@@ -46,6 +46,11 @@ RUN bower install
 # Final Image
 FROM python:3.6-alpine
 LABEL maintainer "Joseph Ligier"
+ENV debug False
+ENV sql_host db
+ENV sql_port 5432
+ENV sql_name postgres
+ENV sql_user postgres
 
 # Install dependancies
 RUN apk add --update \
@@ -62,6 +67,7 @@ RUN pip install --no-index --find-links=wheels -r requirements.txt && rm -rf /sv
 RUN adduser -S -g '' libreosteo -u 1000
 COPY --from=base /Libreosteo /Libreosteo
 RUN chown libreosteo: /Libreosteo /Libreosteo/* /Libreosteo/Libreosteo/settings/
+ADD django-secret-key /usr/local/bin/
 
 # Prepare Libreosteo instance
 USER libreosteo
