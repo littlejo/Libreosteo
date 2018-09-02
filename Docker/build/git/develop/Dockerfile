@@ -53,10 +53,7 @@ ENV sql_name postgres
 ENV sql_user postgres
 
 # Install dependancies
-RUN apk add --no-cache \
-    tzdata \
-    gettext \
-    nodejs
+RUN apk add --no-cache tzdata
 
 # Install pip dependancies
 COPY --from=base /svc /svc
