@@ -6,7 +6,7 @@ ENV USER libreosteo
 ENV BRANCH develop
 
 # Install dependancies
-RUN apk add --update \
+RUN apk add --no-cache \
     tzdata \
     gettext \
     git \
@@ -53,7 +53,7 @@ ENV sql_name postgres
 ENV sql_user postgres
 
 # Install dependancies
-RUN apk add --update \
+RUN apk add --no-cache \
     tzdata \
     gettext \
     nodejs
