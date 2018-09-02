@@ -10,7 +10,6 @@ RUN apk add --no-cache \
     tzdata \
     gettext \
     git \
-    python3-dev \
     nodejs \
     nodejs-npm \
     linux-headers \
