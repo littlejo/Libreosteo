@@ -1,8 +1,14 @@
 version: '2'
 services:
-  libreosteo:
+  libreosteo-python3:
     build:
       context: .
       args:
         python_version: 3.6
-    image: littlejo/libreosteo-git-python3
+    image: littlejo/libreosteo:git-python3
+  libreosteo-python2:
+    build:
+      context: .
+      args:
+        python_version: 2.7
+    image: littlejo/libreosteo:git-python2
