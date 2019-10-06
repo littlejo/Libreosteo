@@ -8,16 +8,16 @@ ENV BRANCH develop
 
 # Install dependancies
 RUN apk add --no-cache \
-    tzdata \
     gettext \
     git \
+    gcc \
+    linux-headers \
+    libc-dev \
     nodejs \
     nodejs-npm \
-    linux-headers \
-    gcc \
-    libc-dev
+    tzdata \
+    yarn
 
-RUN npm install -g bower
 RUN pip install wheel
 
 # Retrieve Libreosteo sources
@@ -41,7 +41,7 @@ RUN adduser -S -g '' libreosteo -u 1000
 RUN chown -R libreosteo: /$software
 USER libreosteo
 WORKDIR /$software
-RUN bower install
+RUN yarn
 
 # Final Image
 FROM python:${python_version}-alpine
@@ -62,8 +62,7 @@ RUN pip install --no-index --find-links=wheels -r requirements.txt && rm -rf /sv
 
 # Retrieve Libreosteo dir
 RUN adduser -S -g '' libreosteo -u 1000
-COPY --from=base /Libreosteo /Libreosteo
-RUN chown libreosteo: /Libreosteo /Libreosteo/* /Libreosteo/Libreosteo/settings/
+COPY --from=base --chown=libreosteo:1000 /Libreosteo /Libreosteo
 ADD django-secret-key /usr/local/bin/
 
 # Prepare Libreosteo instance
