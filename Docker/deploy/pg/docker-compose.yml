@@ -6,8 +6,10 @@ services:
     volumes:
       - ./volumes/libreosteo-db-storage:/var/lib/postgresql/data
       - /etc/localtime:/etc/localtime:ro
+    environment:
+      POSTGRES_PASSWORD: password
   libreosteo:
-    image: littlejo/libreosteo-0.5
+    image: littlejo/libreosteo:0.6.0
     ports:
       - "8085:8085"
     depends_on:
@@ -16,6 +18,7 @@ services:
       sql_type: postgres
       sql_name: postgres
       sql_host: db
+      sql_password: password
       sql_port: 5432
     volumes:
       - /etc/localtime:/etc/localtime:ro
