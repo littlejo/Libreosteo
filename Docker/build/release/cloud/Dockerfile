@@ -59,6 +59,8 @@ RUN chmod a+x /Libreosteo/launch-libreosteo.sh
 USER libreosteo
 COPY local.py.pg /Libreosteo/Libreosteo/settings/
 COPY local.py.sqlite /Libreosteo/Libreosteo/settings/
+RUN rm /Libreosteo/libreosteoweb/static/components/moment/meteor/moment.js
+RUN python manage.py collectstatic --noinput
 
 VOLUME ["/Libreosteo/media", "/Libreosteo/sql"]
 EXPOSE 8085
