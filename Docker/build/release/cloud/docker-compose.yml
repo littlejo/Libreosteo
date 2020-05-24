@@ -5,10 +5,4 @@ services:
       context: .
       args:
         python_version: 3.6
-    image: littlejo/libreosteo:0.6.0
-  libreosteo-python2:
-    build:
-      context: .
-      args:
-        python_version: 2.7
-    image: littlejo/libreosteo:0.6.0-python2
+    image: littlejo/libreosteo:0.6.0-cloud
