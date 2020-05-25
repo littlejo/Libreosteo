@@ -53,15 +53,14 @@ ADD django-secret-key /usr/local/bin/
 # Customize /Libreosteo dir for docker
 USER libreosteo
 WORKDIR /Libreosteo
-COPY launch-libreosteo.sh /Libreosteo
-USER root
-RUN chmod a+x /Libreosteo/launch-libreosteo.sh
-USER libreosteo
-COPY local.py.pg /Libreosteo/Libreosteo/settings/
-COPY local.py.sqlite /Libreosteo/Libreosteo/settings/
 RUN rm /Libreosteo/libreosteoweb/static/components/moment/meteor/moment.js
 RUN python manage.py collectstatic --noinput
-
+COPY --chown=libreosteo:1000 launch-libreosteo.sh /Libreosteo
+RUN chmod a+x /Libreosteo/launch-libreosteo.sh
+COPY --chown=libreosteo:1000 local.py.pg /Libreosteo/Libreosteo/settings/
+COPY --chown=libreosteo:1000 local.py.sqlite /Libreosteo/Libreosteo/settings/
+COPY server.py /Libreosteo/
+USER root
 VOLUME ["/Libreosteo/media", "/Libreosteo/sql"]
 EXPOSE 8085
 ENTRYPOINT ["./launch-libreosteo.sh"]
