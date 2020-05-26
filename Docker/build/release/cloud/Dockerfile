@@ -20,11 +20,8 @@ RUN pip wheel -r requirements.txt --wheel-dir=/svc/wheels
 RUN pip wheel psycopg2 --wheel-dir=/svc/wheels
 
 # Install Javascript dependancies
-FROM python:${python_version} as javascript
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-RUN apt-get update && apt-get install -y yarn
-RUN useradd -ms /bin/sh -u 1000 libreosteo
+FROM node as javascript
+RUN useradd -ms /bin/sh -u 1001 libreosteo
 COPY --from=base --chown=libreosteo:1000 /Libreosteo /Libreosteo
 USER libreosteo
 WORKDIR /Libreosteo
